@@ -1,0 +1,13 @@
+# Dependencies
+/node_modules
+
+# Environment variables - NEVER commit this file
+.env
+
+# Logs and error reports
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output folder
+/dist
