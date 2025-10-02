@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [pastedText, setPastedText] = useState('');
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="container">
+      <h1>Medical Report Simplifier</h1>
+      <p>Upload an image of a medical report or paste its text below.</p>
+
+      <form className="upload-form">
+        <div className="input-group">
+          <label htmlFor="file-upload">Upload Image</label>
+          <input id="file-upload" type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
+        </div>
+        <div className="separator">OR</div>
+        <div className="input-group">
+          <label htmlFor="text-paste">Paste Text</label>
+          <textarea
+            id="text-paste"
+            rows="10"
+            placeholder="Paste medical report text here..."
+            value={pastedText}
+            onChange={(e) => setPastedText(e.target.value)}
+          ></textarea>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Processing...' : 'Simplify Report'}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </form>
+    </div>
+  );
 }
 
-export default App
+export default App;
