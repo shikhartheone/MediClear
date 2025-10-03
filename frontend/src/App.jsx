@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios'; 
 import './App.css';
 
 function App() {
@@ -7,6 +8,39 @@ function App() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const handleSubmit = async (event) => {
+  event.preventDefault();
+  setLoading(true);
+  setError('');
+  setReport(null);
+
+  const formData = new FormData();
+  let config = {};
+  let data = {};
+
+  if (selectedFile) {
+    formData.append('reportImage', selectedFile);
+    config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    data = formData;
+  } else if (pastedText) {
+    config = { headers: { 'Content-Type': 'application/json' } };
+    data = { text: pastedText };
+  } else {
+    setError('Please select a file or paste text.');
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:3000/api/reports/simplify', data, config);
+    setReport(response.data.report);
+  } catch (err) {
+    setError('An error occurred. Please check the console and make sure your backend is running.');
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="container">
