@@ -9,6 +9,11 @@ import {
 import { FiUploadCloud, FiFileText } from 'react-icons/fi';
 import './App.css'; // We'll keep this for a few custom styles
 
+import Lottie from 'react-lottie-player';
+import lottieJson from './assets/animation.json';
+
+
+
 function App() {
   const [tabValue, setTabValue] = useState(0); // 0 for upload, 1 for paste
   const [selectedFile, setSelectedFile] = useState(null);
@@ -160,10 +165,27 @@ sx={{
               />
             )}
             
-            {loading ? (
+            {/* {loading ? (
               <Box textAlign="center" my={2}><CircularProgress /></Box>
             ) : (
               <Button type="submit" variant="contained" size="large" fullWidth>
+                Simplify Report
+              </Button>
+            )} */}
+
+            {loading ? (
+  <Box textAlign="center" my={2}>
+    {/* Replace CircularProgress with this */}
+    <Lottie
+      loop
+      animationData={lottieJson}
+      play
+      style={{ width: 150, height: 100, margin: 'auto' }}
+    />
+    <Typography>Analyzing your report...</Typography>
+  </Box>
+) : (
+  <Button type="submit" variant="contained" size="large" fullWidth>
                 Simplify Report
               </Button>
             )}
