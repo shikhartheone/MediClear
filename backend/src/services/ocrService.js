@@ -1,4 +1,3 @@
-// src/services/ocrService.js
 import { createWorker } from "tesseract.js";
 
 export const performOCR = async (imageBuffer) => {
@@ -16,6 +15,7 @@ export const performOCR = async (imageBuffer) => {
     console.log("Recognizing text from image with improved settings...");
     const result = await worker.recognize(imageBuffer);
     console.log("OCR finished.");
+    console.log(result);
 
     return result.data.text;
   } catch (error) {
