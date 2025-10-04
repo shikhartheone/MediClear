@@ -1,30 +1,33 @@
-import { createWorker } from "tesseract.js";
+// src/services/ocrService.js
+import { ImageAnnotatorClient } from "@google-cloud/vision";
+
+// Initializes a client. It will automatically use the credentials you just set up.
+const client = new ImageAnnotatorClient();
 
 export const performOCR = async (imageBuffer) => {
-  console.log("--- Real OCR Service Called ---");
-  let worker;
+  console.log("--- OCR Service Called with Google Cloud Vision ---");
+
+  // Prepare the request for the Vision API
+  const request = {
+    image: {
+      content: imageBuffer,
+    },
+  };
+
   try {
-    worker = await createWorker("eng");
+    // This specific method is designed to read text from documents
+    const [result] = await client.documentTextDetection(request);
+    const fullTextAnnotation = result.fullTextAnnotation;
 
-    // ADD THIS LINE to improve table recognition.
-    // This tells Tesseract to assume a single uniform block of text.
-    await worker.setParameters({
-      tessedit_pageseg_mode: "6",
-    });
-
-    console.log("Recognizing text from image with improved settings...");
-    const result = await worker.recognize(imageBuffer);
-    console.log("OCR finished.");
-    console.log(result);
-
-    return result.data.text;
-  } catch (error) {
-    console.error("Error during OCR processing:", error);
-    throw error;
-  } finally {
-    if (worker) {
-      await worker.terminate();
-      console.log("OCR worker terminated.");
+    if (!fullTextAnnotation || !fullTextAnnotation.text) {
+      throw new Error("Google Cloud Vision could not detect any text.");
     }
+
+    console.log("Google Cloud Vision OCR finished successfully.");
+    console.log(result);
+    return fullTextAnnotation.text;
+  } catch (error) {
+    console.error("Error during Google Cloud Vision OCR:", error);
+    throw new Error("Failed to process image with Cloud Vision API.");
   }
 };
