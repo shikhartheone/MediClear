@@ -2,8 +2,8 @@
 
 This is a full-stack web application designed to demystify complex medical lab reports. It leverages an OCR engine and a multi-step AI pipeline to transform dense, jargon-filled reports (from images or text) into simple, patient-friendly summaries.
 
-![MediClear UI Screenshot]
-*(Suggestion: Add a screenshot of your final application UI here.)*
+## Demo Video
+(https://drive.google.com/file/d/1BbsWx9oMqjQxaFtW7uTBxYl4xf2Ez_fA/view?usp=sharing)
 
 ## Features
 
